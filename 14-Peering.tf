@@ -37,7 +37,7 @@ resource "aws_vpc" "japan_vpc" {
 resource "aws_subnet" "japan_subnet_1" {
   vpc_id = aws_vpc.japan_vpc.id
   cidr_block = "10.100.1.0/24"
-  availability_zone = "ap-northeast-1a"
+  availability_zone = "ap-east-1a"
   map_public_ip_on_launch = true
   tags = {
     Name = "Japan-Subnet-1"
@@ -47,7 +47,7 @@ resource "aws_subnet" "japan_subnet_1" {
 resource "aws_subnet" "japan_subnet_2" {
   vpc_id = aws_vpc.japan_vpc.id
   cidr_block = "10.100.3.0/24"
-  availability_zone = "ap-northeast-1b"
+  availability_zone = "ap-east-1b"
   map_public_ip_on_launch = true
   tags = {
     Name = "Japan-Subnet-2"
@@ -57,7 +57,7 @@ resource "aws_subnet" "japan_subnet_2" {
 resource "aws_subnet" "japan_subnet_3" {
   vpc_id = aws_vpc.japan_vpc.id
   cidr_block = "10.100.5.0/24"
-  availability_zone = "ap-northeast-1c"
+  availability_zone = "ap-east-1c"
   map_public_ip_on_launch = true
   tags = {
     Name = "Japan-Subnet-3"
