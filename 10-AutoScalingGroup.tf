@@ -6,7 +6,9 @@ resource "aws_autoscaling_group" "Hong-Kong_asg" {
   vpc_zone_identifier   = [
     aws_subnet.private-ap-east-1a.id,
     aws_subnet.private-ap-east-1b.id,
+    /*
     aws_subnet.private-ap-east-1c.id
+    */
   ]
   health_check_type          = "ELB"
   health_check_grace_period  = 300
