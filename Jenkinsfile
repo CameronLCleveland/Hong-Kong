@@ -12,10 +12,7 @@ pipeline {
                 ]]) {
                     sh '''
                     echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-                    docker run --rm \
-                        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-                        amazon/aws-cli sts get-caller-identity
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
                     '''
                 }
             }
@@ -34,12 +31,9 @@ pipeline {
                     credentialsId: 'AWS_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    docker run --rm \
-                        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-                        amazon/aws-cli sts get-caller-identity
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
+                    terraform init  # Initialize terraform directly
                     '''
-                    sh "terraform init"
                 }
             }
         }
@@ -51,12 +45,9 @@ pipeline {
                     credentialsId: 'AWS_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    docker run --rm \
-                        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-                        amazon/aws-cli sts get-caller-identity
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
+                    terraform plan -out=tfplan  # Plan terraform directly
                     '''
-                    sh 'terraform plan -out=tfplan'
                 }
             }
         }
@@ -69,12 +60,9 @@ pipeline {
                     credentialsId: 'AWS_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    docker run --rm \
-                        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-                        amazon/aws-cli sts get-caller-identity
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
+                    terraform apply -auto-approve tfplan  # Apply terraform changes directly
                     '''
-                    sh 'terraform apply -auto-approve tfplan'
                 }
             }
         }
