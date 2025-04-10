@@ -45,4 +45,35 @@ pipeline {
                     credentialsId: 'AWS_ACCESS_KEY' 
                 ]]) {
                     sh '''
-                    aws sts get-caller-identity
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
+                    terraform plan -out=tfplan  # Plan terraform directly
+                    '''
+                }
+            }
+        }
+
+        stage('Apply Terraform') {
+            steps {
+                input message: "Approve Terraform Apply?", ok: "Deploy"
+                withCredentials([[ 
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    credentialsId: 'AWS_ACCESS_KEY' 
+                ]]) {
+                    sh '''
+                    aws sts get-caller-identity  # Directly use aws CLI instead of docker
+                    terraform apply -auto-approve tfplan  # Apply terraform changes directly
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Terraform deployment completed successfully!'
+        }
+        failure {
+            echo 'Terraform deployment failed!'
+        }
+    }
+}
